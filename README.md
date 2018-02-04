@@ -12,7 +12,7 @@ This has two steps:
 1) Install and configure `stunnel` on server.
 2) Install and configure `stunnel` on client.
 
-In reality `SSL/TLS` traffic is short and intermittent so still it would be easy for a goverment to detect `stunnel` since lots of traffic will be passed as `SSL/TLS`. It is recommended to use port `TCP 443` or `TCP 587` to hide the traffic so far.
+In reality `SSL/TLS` traffic is short and intermittent so still it would be easy for a goverment/ISP to detect `stunnel` since lots of traffic will be passed as `SSL/TLS`. It is recommended to use port `TCP 443` or `TCP 587` to hide the traffic so far.
 
 # Install and configure `stunnel` on server
 
@@ -20,4 +20,73 @@ You can run the script `stunnel.sh` provided by this tutorial like:
 ```bash
 sudo bash stunnel.sh
 ```
+download `stunnel.pem` from your home directory after installation got completed.
+Now step two is configuring client side.
 
+# Install and configure `stunnel` on client
+
+You should have a `client.ovpn` config file or something similar for connecting to openvpn server.
+Edit this file and add the following lins at the begining:
+
+```bash
+script-security 2
+up /etc/openvpn/update-resolv-conf
+down /etc/openvpn/update-resolv-conf
+
+route server_ip 255.255.255.255 net_gateway
+```
+
+Replace `server_ip` with your server public IP address.
+
+## Install stunnel
+
+```bash
+sudo apt install stunnel4
+```
+
+## Copy pem file from server installation to the client
+
+```bash
+sudo cp ./stunnel.pem /etc/stunnel
+```
+
+## Configuring stunnel
+
+Create `/etc/stunnel/stunnel.conf` file with the following content:
+
+```bash
+[openvpn]
+client = yes
+accept = 1194
+connect = server_ip:443
+cert = /etc/stunnel/stunnel.pem
+```
+
+Replace `server_ip` with your server public IP address. Here we used port `443`
+
+## Configuring firewall
+
+```bash
+sudo iptables -A INPUT -p tcp -s localhost --dport 1194 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 1194 -j DROP
+```
+
+## Restart stunnel service
+
+```bash
+sudo service stunnel4 restart
+```
+
+## Connecting
+
+Now you just connect to openvpn via its' config file and it will automatically route traffic via stunnel. Your local stunnel will connect to remote stunnel on the server which routes received trsffic to oprnvpn service.
+
+Example:
+
+```bash
+sudo openvpn --config client.ovpn
+```
+
+Everything should work well by now.
+
+[Contact Me](https<://twitter.com/xaqron)
