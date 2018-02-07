@@ -1,5 +1,5 @@
 # stunnel
-Hiding [openvpn](https://en.wikipedia.org/wiki/OpenVPN) traffic with stunnel so [DPI](https://en.wikipedia.org/wiki/Deep_packet_inspection) firewalls are less to block your traffic.
+Hiding [openvpn](https://en.wikipedia.org/wiki/OpenVPN) traffic with stunnel so [DPI](https://en.wikipedia.org/wiki/Deep_packet_inspection) firewalls are less likely to block your traffic.
 
 # Concept
 
@@ -89,4 +89,4 @@ sudo openvpn --config client.ovpn
 
 Everything should work well by now.
 
-[Contact Me](https<://twitter.com/xaqron)
+[Contact Me](https://twitter.com/xaqron)
