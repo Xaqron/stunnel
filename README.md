@@ -64,6 +64,8 @@ cert = /etc/stunnel/stunnel.pem
 
 Replace `server_ip` with your server public IP address. Here we used port `443`
 
+To enable Stunnel service at startup edit `/etc/default/stunnel4` file and change `ENABLED=0` to `ENABLED=1`
+
 ## Configuring firewall
 
 ```bash
