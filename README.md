@@ -38,6 +38,10 @@ route server_ip 255.255.255.255 net_gateway
 
 Replace `server_ip` with your server public IP address.
 
+Also replace the remote line by:
+
+```remote 127.0.0.1 1194```
+
 ## Install stunnel
 
 ```bash
