@@ -16,4 +16,5 @@ sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 sudo cp /etc/stunnel/stunnel.pem ~
 # download stunnel.pem from home directory. It is needed by client.
+sudo systemctl enable stunnel4
 sudo service stunnel4 restart
